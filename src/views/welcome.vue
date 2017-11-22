@@ -10,6 +10,7 @@
                         <a :class="{'active': cuurrentIndex == 1 }" @click="changeTab(1)">登录</a>
                         <a :class="{'active': cuurrentIndex == 2 }" @click="changeTab(2)">注册</a>
                     </h4>
+                    <button @click="test">test</button>
                 </el-col>
                 <el-col :span="6" :offset="14" v-show="cuurrentIndex == 2">
                     <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px">
@@ -126,21 +127,32 @@ export default {
         }
     },
     methods: {
+        test(){
+            this.$router.push({path:'/dashboard'})
+        },
         login(){
             this.$refs['ruleForm1'].validate((valid) => {
                 if (valid) {
                     user.login(this.ruleForm1).then(res=>{
-                        if(res.data.code === 0){
+                        if(res.data.code == 0){
+                            this.$store.dispatch('updateUser',res.data.data)
                             this.$message({
                                 message: '恭喜你,登录成功',
                                 type: 'success'
                             });
-                            this.$route.push({path:'/dashboard'})
+                            this.$router.push({path:'/dashboard'})
+                        } else {
+                            this.$message({
+                                message: '登录失败',
+                                type: 'error'
+                            });
                         }
                     })
                 } else {
-                    console.log('error submit!!');
-                    return false;
+                    this.$message({
+                        message: '未正确填入表单',
+                        type: 'error'
+                    });
                 }
             });
         },
@@ -149,17 +161,25 @@ export default {
                 if (valid) {
                     user.register(this.ruleForm2).then(res=>{
                         // 储存权限信息
-                        if(res.data.code === 0){
+                        if(res.data.code == 0){
+                            this.$store.dispatch('updateUser',res.data.data)
                             this.$message({
                                 message: '恭喜你,注册成功,即将转入登录后主页',
                                 type: 'success'
                             });
-                            this.$route.push({path:'/dashboard'})
+                            this.$router.push({path:'/dashboard'})
+                        } else {
+                            this.$message({
+                                message: '注册失败',
+                                type: 'error'
+                            });
                         }
                     })
                 } else {
-                    console.log('error submit!!');
-                    return false;
+                    this.$message({
+                        message: '未正确填入表单',
+                        type: 'error'
+                    });
                 }
             });
         },

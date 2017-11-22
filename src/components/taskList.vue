@@ -19,12 +19,14 @@
                 </el-checkbox-button>
             </el-checkbox-group>
             <div class="dropBox">
-                <el-dropdown trigger="click">
+                <el-dropdown trigger="click" @command="dropClick">
                 <span class="add-dropdown-link">
                     <i class="el-icon-plus el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item @click="addFormVisible = true">新建活动</el-dropdown-item>
+                    <el-dropdown-item command="a">
+                        新建活动
+                    </el-dropdown-item>
                 </el-dropdown-menu>
                 </el-dropdown>
             </div>
@@ -41,11 +43,12 @@
     <div class="sidebar-list">
         <div class="ember-view">
             <ul class="task-list">
-                <li class="task" v-for="(item,index) in tasklist" :key="index">
+                <li class="task" @click="selectMessage(index)"
+                    v-for="(item,index) in filterlist" :key="index">
                     <div class="task-card pass">
                         <h2>
-                            <a :href="'/'+item.name">
-                                <span>{{ item.name }}</span>
+                            <a>
+                                <span>{{ item.title }}</span>
                             </a>
                             <span class="tag">#{{item.id}}</span>
                         </h2>
@@ -78,18 +81,53 @@ export default {
       }
   },
   computed:{
-      tasklist(){
-          return this.$store.getters.taskList.filter(ele=>{
-              return ele.name.includes(this.searchinput) || (ele.id + "").includes(this.searchinput)
-          });
+      filterlist(){
+          return this.$store.getters.messageList
+                   .filter(ele=>{
+                       return ele.title.includes(this.searchinput) 
+                   })
+        //       //|| (ele.id + "").includes(this.searchinput)
+        //   });
       },
   },
   methods:{
       add(){
-          this.$message({
-                message: '恭喜你，这是一条成功消息',
-                type: 'success'
+        if(!this.addForm.title){
+            this.$message({
+                message: '添加失败,请输入名称',
+                type: 'error'
             });
+            this.addFormVisible = false
+            return
+        }
+        let message = {
+            title: this.addForm.title,
+            status: '待确认',
+            poster: this.$store.getters.name,
+        }
+        this.$store.dispatch('addMessage',message).then(res=>{
+            if(res.data.code == 0){
+                this.addFormVisible = false
+                this.$message({
+                    message: '添加成功',
+                    type: 'success'
+                })
+                this.$store.dispatch('updateMessageList')
+            } else {
+                this.$message({
+                    message: res.data.msg,
+                    type: 'info'
+                });
+            }
+        })
+        
+      },
+      selectMessage(index){
+          this.$store.dispatch('selectMessage',index)
+      },
+      dropClick(){
+          console.log('dropClick')
+          this.addFormVisible = true
       }
   }
 }
@@ -134,6 +172,7 @@ i{
     
     .task-list{
         .task{
+            cursor: pointer;
             .task-card{
                 height: 100px;
                 padding: 5px 0px 10px 25px;

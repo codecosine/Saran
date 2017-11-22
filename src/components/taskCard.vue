@@ -1,23 +1,25 @@
 <template>
   <div>
+    <h2>{{ message.title }}</h2>
     <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="状态" name="first">
             <div>
               <section class="current-box pass">
                 <div class="box-info">
-                  <h2 class="passed">1</h2>
+                  <h2 class="passed"></h2>
                   <div>
                     <ul class="box-info-list">
-                      <li><span><i class="el-icon-info"></i>ID:</span>18825</li>
+                      <li><span>ID:</span>{{ message.id }}</li>
                     </ul>
                   </div>
                 </div>
                 <div class="box-result">
-                  <h4>状态<el-tag style="margin-left:10px" size="mini">进行中</el-tag>
+                  <h4>状态<el-tag style="margin-left:10px" size="mini">{{message.status}}</el-tag>
                   </h4>
                   <div>
                     <ul class="box-info-list">
-                      <li><span><i class="el-icon-time"></i>发起时间:</span>2017-11-9 23:46:53</li>
+                      <li><span><i class="el-icon-time"></i>创建时间:</span>{{message.createdAt}}</li>
+                      <li><span><i class="el-icon-time"></i>更新时间:</span>{{message.updatedAt}}</li>
                     </ul>
                   </div>
                 </div>
@@ -67,9 +69,6 @@
   </div>
 </template>
 <script>
-  // import Quill from 'quill'
-  // import { someModule } from '../yourModulePath/someQuillModule.js'
-  // Quill.register('modules/someModule', someModule)
   import { quillEditor } from 'vue-quill-editor'
 
   export default {
@@ -79,12 +78,24 @@
     data() {
       return {
         content: '<h2>I am Example</h2>',
-        editorOption: {
-          // some quill options
-        },
+        editorOption: {},
         activeName: 'first',
         fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
       };
+    },
+    computed:{
+        message(){
+          return this.$store.getters.cuurentMessage || {
+            annex:"",
+            content:"",
+            createdAt:"2017-11-22 17:24:13",
+            id:0,
+            poster:"游客",
+            status:"待确认",
+            title:"测试活动001",
+            updatedAt:"2017-11-22T17:24:13.000Z",
+          }
+        }
     },
     methods: {
       handleClick(tab, event) {

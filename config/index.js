@@ -35,7 +35,11 @@ module.exports = {
       '/sign': {
         target: 'http://127.0.0.1:2247',
         changeOrigin: true,
-      }
+      },
+      '/api': {
+        target: 'http://127.0.0.1:2247',
+        changeOrigin: true,
+      },
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

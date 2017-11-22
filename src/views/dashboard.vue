@@ -6,7 +6,6 @@
         </el-aside>
         <el-main>
             <div class="content">
-                <h2>活动1</h2>
                 <taskCard></taskCard>
             </div>
         </el-main>
@@ -20,6 +19,9 @@ export default {
     components: {
         taskList,
         taskCard,
+    },
+    created(){
+        this.$store.dispatch('updateMessageList')
     }
 }
 </script>

@@ -9,6 +9,9 @@
                   <a :href="item.path">{{item.name}}</a>
                 </li>
               </ul>
+              <ul class="nav navbar-nav" style="float:right">
+                <li><a>{{name}}</a></li>
+              </ul>
             </nav>
       </el-header>
       <div style="background-color:#fff; height:82vh">
@@ -51,6 +54,9 @@ export default {
   computed:{
     routePath(){
       return this.$route.path;
+    },
+    name(){
+      return this.$store.getters.name
     }
 
   }
