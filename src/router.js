@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import DashBoard from '@/views/dashboard'
-import addTask from '@/views/addTask'
 import welcome from '@/views/welcome'
 import userBoard from '@/views/userboard'
 
