@@ -149,6 +149,8 @@ export default {
                 label:'成员管理'
             },{
                 label:'部门管理'
+            },{
+                label:'物资管理'
             }],
             tableData: [{
                 createdAt: '2016-05-02',

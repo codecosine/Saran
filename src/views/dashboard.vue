@@ -6,7 +6,7 @@
         </el-aside>
         <el-main>
             <div class="content">
-                <h1>task18825/administrator</h1>
+                <h3>活动1</h3>
                 <taskCard></taskCard>
             </div>
         </el-main>

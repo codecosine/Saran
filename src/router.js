@@ -4,7 +4,6 @@ import DashBoard from '@/views/dashboard'
 import addTask from '@/views/addTask'
 import welcome from '@/views/welcome'
 import userBoard from '@/views/userboard'
-import materialsboard from '@/views/materialsboard'
 
 Vue.use(Router)
 
@@ -29,10 +28,6 @@ export default new Router({
       path: '/userBoard',
       name: 'userBoard',
       component: userBoard
-    },{
-      path:'/materials',
-      name: 'materials',
-      component: materialsboard
     }
   ]
 })

@@ -33,19 +33,15 @@ export default {
     return {
       routesList:[{
         path:'/welcome',
-        name:'朝岚日语~'
+        name:'@朝岚日语研究社'
       },
       {
         path:'/dashboard',
         name:'活动信息'
       },
       {
-        path:'/materials',
-        name:'社团物资'
-      },
-      {
         path:'/userBoard',
-        name:'社团成员'
+        name:'社团管理'
       }
       ]
     }

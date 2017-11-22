@@ -1,14 +1,21 @@
 <template>
   <div class="wrapper-main">
+    <div class="filterBox">
+            <el-checkbox-group v-model="messageFilter" size="mini">
+                <el-checkbox-button v-for="(item,index) in messageList" 
+                    :label="item.label" 
+                    :key="index">
+                </el-checkbox-button>
+            </el-checkbox-group>
+    </div>
     <div class="search">
         <el-input
-            placeholder="search task..."
+            placeholder="search..."
             size="small"
             v-model="searchinput">
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
     </div>
-    <nav></nav>
     <div class="sidebar-list">
         <div class="ember-view">
             <ul class="task-list">
@@ -20,8 +27,8 @@
                             </a>
                             <span class="tag">#{{item.id}}</span>
                         </h2>
-                        <p><i class="el-icon-document"></i>{{ item.algs }}</p>
-                        <p><i class="el-icon-time"></i>{{ item.finishTime }}</p>
+                        <p><i class="el-icon-view"></i>{{ item.poster }}</p>
+                        <p><i class="el-icon-time"></i>{{ item.createdAt }}</p>
                     </div>
                 </li>
             </ul>  
@@ -34,6 +41,14 @@ export default {
   data(){
       return {
           searchinput: '',
+          messageFilter:[],
+          messageList:[{
+                label:'待确认'
+            },{
+                label:'进行中'
+            },{
+                label:'已完成'
+            }],
       }
   },
   computed:{
@@ -58,8 +73,11 @@ i{
     overflow: visible;
     min-height: 80vh;
 }
+.filterBox{
+    padding: 15px 10px 0px 15px
+}
 .search{
-    padding: 30px 15px;
+    padding: 10px 15px;
 }
 .sidebar-list{
     background-color:#dfe4ed;
