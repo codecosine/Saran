@@ -24,11 +24,19 @@ export default {
     return {
       routesList:[{
         path:'/welcome',
-        name:'朝岚社团管理应用'
+        name:'朝岚日语~'
       },
       {
         path:'/dashboard',
-        name:'帮助'
+        name:'活动信息'
+      },
+      {
+        path:'/materials',
+        name:'社团物资'
+      },
+      {
+        path:'/userBoard',
+        name:'社团成员'
       }
       ]
     }

@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import DashBoard from '@/views/dashboard'
 import addTask from '@/views/addTask'
 import welcome from '@/views/welcome'
+import userBoard from '@/views/userboard'
+import materialsboard from '@/views/materialsboard'
 
 Vue.use(Router)
 
@@ -19,19 +21,18 @@ export default new Router({
       component: welcome,
     },
     {
-      path: '/index',
-      name: 'index',
-      component: DashBoard
-    },
-    {
       path: '/dashboard',
       name: 'dashboard',
       component: DashBoard
     },
     {
-      path: '/addTask',
-      name: 'addTask',
-      component: addTask
+      path: '/userBoard',
+      name: 'userBoard',
+      component: userBoard
+    },{
+      path:'/materials',
+      name: 'materials',
+      component: materialsboard
     }
   ]
 })
