@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="welcome_wrap">
     
     <el-container>
         <el-main>
@@ -129,8 +129,15 @@ export default {
         login(){
             this.$refs['ruleForm1'].validate((valid) => {
                 if (valid) {
-                    console.log('login')
-                    user.login(this.ruleForm1)
+                    user.login(this.ruleForm1).then(res=>{
+                        if(res.data.code === 0){
+                            this.$message({
+                                message: '恭喜你,登录成功',
+                                type: 'success'
+                            });
+                            this.$route.push({path:'/dashboard'})
+                        }
+                    })
                 } else {
                     console.log('error submit!!');
                     return false;
@@ -140,8 +147,16 @@ export default {
         register(){
             this.$refs['ruleForm2'].validate((valid) => {
                 if (valid) {
-                    console.log('register')
-                    user.register(this.ruleForm2)
+                    user.register(this.ruleForm2).then(res=>{
+                        // 储存权限信息
+                        if(res.data.code === 0){
+                            this.$message({
+                                message: '恭喜你,注册成功,即将转入登录后主页',
+                                type: 'success'
+                            });
+                            this.$route.push({path:'/dashboard'})
+                        }
+                    })
                 } else {
                     console.log('error submit!!');
                     return false;
@@ -156,11 +171,11 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.content{
-    //background: url('../assets/gdut.jpeg') no-repeat;
+.welcome_wrap{
+    background: url('../assets/campus.jpeg') no-repeat;
     // background-size:100% 100%;
     background-origin:border-box;
-    min-height: 60vh
+    height: 100%;
 }
 .signTab{
     padding-left: 50px;

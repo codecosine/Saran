@@ -1,5 +1,16 @@
 <template>
   <div class="wrapper-main">
+      <el-dialog title="新建活动"  width="40%" :visible.sync="addFormVisible">
+        <el-form :model="addForm">
+            <el-form-item label="名称" label-width="80px">
+                <el-input v-model="addForm.title" auto-complete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="addFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="add">确定添加</el-button>
+        </div>
+    </el-dialog>
     <div class="filterBox">
             <el-checkbox-group v-model="messageFilter" size="mini">
                 <el-checkbox-button v-for="(item,index) in messageList" 
@@ -7,6 +18,17 @@
                     :key="index">
                 </el-checkbox-button>
             </el-checkbox-group>
+            <div class="dropBox">
+                <el-dropdown trigger="click">
+                <span class="add-dropdown-link">
+                    <i class="el-icon-plus el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item @click="addFormVisible = true">新建活动</el-dropdown-item>
+                </el-dropdown-menu>
+                </el-dropdown>
+            </div>
+            
     </div>
     <div class="search">
         <el-input
@@ -40,7 +62,11 @@
 export default {
   data(){
       return {
+          addFormVisible: false,
           searchinput: '',
+          addForm:{
+              title:''
+          },
           messageFilter:[],
           messageList:[{
                 label:'待确认'
@@ -57,7 +83,14 @@ export default {
               return ele.name.includes(this.searchinput) || (ele.id + "").includes(this.searchinput)
           });
       },
-
+  },
+  methods:{
+      add(){
+          this.$message({
+                message: '恭喜你，这是一条成功消息',
+                type: 'success'
+            });
+      }
   }
 }
 </script>
@@ -74,7 +107,24 @@ i{
     min-height: 80vh;
 }
 .filterBox{
-    padding: 15px 10px 0px 15px
+    position: relative;
+    padding: 15px 10px 0px 15px;
+    .dropBox{
+        position: absolute;
+        right: 20px;
+        top:20px;
+    }
+    .add-dropdown-link{
+        font-size: 1em;
+        cursor: pointer;
+        color: #333;
+        padding-left: 5px;
+        padding-top: 5px;
+        //line-height: 50px;
+        &:hover{
+            color:#399faa;
+        }
+    }
 }
 .search{
     padding: 10px 15px;

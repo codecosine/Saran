@@ -5,31 +5,30 @@
             <div>
               <section class="current-box pass">
                 <div class="box-info">
-                  <h2 class="passed">任务执行完成</h2>
+                  <h2 class="passed">1</h2>
                   <div>
                     <ul class="box-info-list">
                       <li><span><i class="el-icon-info"></i>ID:</span>18825</li>
-                      <li><span><i class="el-icon-document"></i>算法:</span>IDE3</li>
                     </ul>
                   </div>
                 </div>
                 <div class="box-result">
-                  <h3>状态<el-tag style="margin-left:10px" size="mini">进行中</el-tag>
-                  </h3>
+                  <h4>状态<el-tag style="margin-left:10px" size="mini">进行中</el-tag>
+                  </h4>
                   <div>
                     <ul class="box-info-list">
-                      <li><span><i class="el-icon-time"></i>启动时间:</span>2017-11-9 23:46:53</li>
+                      <li><span><i class="el-icon-time"></i>发起时间:</span>2017-11-9 23:46:53</li>
                     </ul>
                   </div>
                 </div>
-       
               </section>
             </div>
             
         </el-tab-pane>
         <el-tab-pane label="内容信息" name="second">
-          <quill-editor v-model="content"
+            <quill-editor v-model="content"
                           ref="myQuillEditor"
+                          style="height:400px"
                           :options="editorOption"
                           @blur="onEditorBlur($event)"
                           @focus="onEditorFocus($event)"
@@ -37,10 +36,32 @@
             </quill-editor>
         </el-tab-pane>
         <el-tab-pane label="附件" name="third">
-
+            <el-upload
+              class="upload-demo"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              multiple
+              :limit="3"
+              :on-exceed="handleExceed"
+              :file-list="fileList">
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
         </el-tab-pane>
         <el-tab-pane label="历史记录" name="four">
-
+          <el-alert title="XXXX操作信息！@！#！@321321"
+              type="info" show-icon>
+          </el-alert>
+          <el-alert title="XXXX操作信息！@！#！@321321"
+              type="info" show-icon>
+          </el-alert>
+          <el-alert title="XXXX操作信息！@！#！@321321"
+              type="info" show-icon>
+          </el-alert>
+          <el-alert title="XXXX操作信息！@！#！@321321"
+              type="info" show-icon>
+          </el-alert>
         </el-tab-pane>
     </el-tabs>
   </div>
@@ -61,7 +82,8 @@
         editorOption: {
           // some quill options
         },
-        activeName: 'second'
+        activeName: 'first',
+        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
       };
     },
     methods: {
@@ -77,6 +99,15 @@
       onEditorReady(editor) {
         console.log('editor ready!', editor)
       },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      }
     }
   };
 </script>

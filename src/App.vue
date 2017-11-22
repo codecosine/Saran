@@ -11,7 +11,9 @@
               </ul>
             </nav>
       </el-header>
-      <router-view></router-view>
+      <div style="background-color:#fff; height:82vh">
+        <router-view></router-view>
+      </div>
       <div class="bd-footer text-muted footer-container">
         <ul class="bd-footer-links">
           <li><a href="https://github.com/codecosine/Saran">@朝岚日语社团管理平台</a></li>

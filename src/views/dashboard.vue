@@ -6,7 +6,7 @@
         </el-aside>
         <el-main>
             <div class="content">
-                <h3>活动1</h3>
+                <h2>活动1</h2>
                 <taskCard></taskCard>
             </div>
         </el-main>
