@@ -160,7 +160,7 @@ export default {
     //background: url('../assets/gdut.jpeg') no-repeat;
     // background-size:100% 100%;
     background-origin:border-box;
-
+    min-height: 60vh
 }
 .signTab{
     padding-left: 50px;
