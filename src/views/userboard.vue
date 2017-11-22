@@ -85,6 +85,30 @@
 
                 </div>
             </el-col>
+            <el-dialog
+                title="修改密码"
+                :visible.sync="modifyPwdDialog"
+                width="30%"
+                center>
+                <el-form :model="modifyForm">
+                    <el-form-item label="邮箱" label-width="80px">
+                        <el-input v-model="modifyForm.mail" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="旧密码" label-width="80px">
+                        <el-input type="password" v-model="modifyForm.pwd" auto-complete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="新密码" label-width="80px">
+                        <el-input type="password" v-model="modifyForm.npwd" auto-complete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="确认密码" label-width="80px">
+                        <el-input type="password" v-model="modifyForm.checkpwd" auto-complete="off"></el-input>
+                    </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="modifyPwdDialog = false">取 消</el-button>
+                    <el-button type="primary" @click="modifyPwdDialog = false">确 定</el-button>
+                </span>
+            </el-dialog>
         </el-row>
         
   </div>
@@ -94,13 +118,20 @@
 export default {
    data() {
         return {
+            modifyPwdDialog: false,
             adminAuth: true,
             // searchFilter
             searchValue: '',
             departmentFilter: [],
             // tab
             tabIndex: 0,
-            // 
+            // form
+            modifyForm: {
+                mail:'',
+                pwd:'',
+                npwd: '',
+                checkpwd: '',
+            },
             departmentValue: '',
             transferValue: [],
             departmentList:[{
@@ -147,6 +178,8 @@ export default {
         },
         modifyPwd(row) {
             console.log(row);
+            this.modifyForm.mail = row.mail;
+            this.modifyPwdDialog = true;
         },
         filterMethod(query, item) {
             console.log(item)
