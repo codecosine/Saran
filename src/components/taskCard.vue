@@ -40,7 +40,8 @@
         <el-tab-pane label="附件" name="third">
             <el-upload
               class="upload-demo"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              name="annex"
+              action="/api/uploadAnnex"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
               multiple

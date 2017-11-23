@@ -36,6 +36,7 @@ export default {
   name: 'app',
   data(){
     return {
+      test:'test',
       routesList:[{
         path:'/welcome',
         name:'@朝岚日语研究社'
@@ -57,8 +58,15 @@ export default {
     },
     name(){
       return this.$store.getters.name
+    },
+    token(){
+      return this.$store.getters.token
     }
-
+  },
+  methods:{
+    getUserToken(){
+      return this.$store.getters.token
+    }
   }
 }
 </script>

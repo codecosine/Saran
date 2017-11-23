@@ -23,12 +23,13 @@
                             </el-checkbox-group>
                         </div>
                         <div class="filterBox">
-                        <el-input
-                            size="mini"
-                            placeholder="查询.."
-                            suffix-icon="el-icon-search"
-                            v-model="searchValue">
-                        </el-input>
+                            <el-input
+                                size="mini"
+                                placeholder="查询.."
+                                suffix-icon="el-icon-search"
+                                v-model="searchValue">
+                            </el-input>
+                            <i class="el-icon-refresh" @click="getList"></i>
                         </div>
                     </div>
                      <el-table
@@ -57,8 +58,7 @@
                         <el-table-column
                             v-if="adminAuth"
                             fixed="right"
-                            label="操作"
-                            >
+                            label="操作">
                             <template slot-scope="scope">
                                 <el-button @click="modifyPwdClick(scope.row)" type="text" size="small">修改密码</el-button>
                                 <el-button @click="modifyAuthClick(scope.row)" type="text" size="small">权限修改</el-button>
@@ -69,18 +69,22 @@
                 </div>
                 <div v-show="tabIndex == 1">
                     <h2>部门管理</h2>
-                    <h4>请选择部门</h4>
+                    <h4>请选择转移的部门</h4>
                     <el-radio-group v-model="departmentValue" size="small">
-                        <el-radio-button  v-for="item in departmentList" :key="item.label" :label="item.label" ></el-radio-button>
+                        <el-radio-button v-for="item in departmentList" :key="item.label" :label="item.label" ></el-radio-button>
                     </el-radio-group>
                     <h4>请选择成员</h4>
                     <el-transfer  filterable
                         :filter-method="filterMethod"
+                        :props="{
+                            key: 'id',
+                            label: 'name'
+                        }"
                         filter-placeholder="请输入姓名或邮箱"
                         :titles="['成员列表','转移的部门']"
                         v-model="transferValue" :data="tableData">
                     </el-transfer>
-
+                    <el-button type="primary" @click="changeDep">确定</el-button>
                 </div>
                 <div class="memberBox" v-show="tabIndex == 2">
                     <h2>物资管理</h2>
@@ -106,7 +110,7 @@
                         </el-table-column>
                          <el-table-column
                             prop="name"
-                            label="姓名">
+                            label="物资名称">
                         </el-table-column>
                         <el-table-column
                             prop="status"
@@ -114,7 +118,7 @@
                         </el-table-column>
                         <el-table-column
                             prop="remark"
-                            label="状态">
+                            label="备注信息">
                         </el-table-column>
                         <el-table-column
                             prop="updatedAt"
@@ -126,7 +130,8 @@
                             label="操作"
                             >
                             <template slot-scope="scope">
-                                <el-button type="text" size="small">删除</el-button>
+                                <el-button type="text" size="small">修改</el-button>
+                                <el-button type="text" size="small" @click="destoryMa">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -178,16 +183,16 @@
                     
                 </el-form>
                 <span slot="footer" class="dialog-footer">
-                    <el-button @click="modifyPwdDialog = false">取 消</el-button>
+                    <el-button @click="modifyAuthDialog = false">取 消</el-button>
                     <el-button type="primary" @click="modifyPwd">确 定</el-button>
                 </span>
             </el-dialog>
             <el-dialog title="添加物资"  width="30%" :visible.sync="addMaFormVisible">
                 <el-form :model="addMaForm">
-                    <el-form-item label="物资名称" :label-width="formLabelWidth">
+                    <el-form-item label="物资名称" label-width="80px">
                         <el-input v-model="addMaForm.name" auto-complete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="备注" :label-width="formLabelWidth">
+                    <el-form-item label="备注" label-width="80px">
                         <el-input v-model="addMaForm.remark" auto-complete="off"></el-input>
                     </el-form-item>
                    
@@ -202,7 +207,8 @@
   </div>
 </template>
 <script>
-
+import user from '../api/user'
+import materials from '../api/materials'
 export default {
    data() {
         return {
@@ -220,10 +226,13 @@ export default {
                 name:'',
                 remark:'',
             },
+            deMaForm:{
+                name:''
+            },
             modifyForm: {
                 mail:'',
-                pwd:'',
-                npwd: '',
+                oldpwd:'',
+                freshpwd: '',
                 checkpwd: '',
             },
             modifyAuthForm: {
@@ -233,16 +242,16 @@ export default {
             departmentValue: '',
             transferValue: [],
             options: [{
-                value: '社长',
+                value: 'president',
                 label: '社长'
             }, {
-                value: '部长',
+                value: 'minister',
                 label: '部长'
             }, {
-                value: '小干部',
+                value: 'cadre',
                 label: '小干部'
             }, {
-                value: '普通社员',
+                value: 'member',
                 label: '普通社员'
             }],
             departmentList:[{
@@ -263,13 +272,8 @@ export default {
             },{
                 label:'物资管理'
             }],
-            tableData: [{
-                createdAt: '2016-05-02',
-                name: '王小虎',
-                auth:'会员',
-                department: '秘书部',
-                mail: 'abc@qq.com'
-            }]
+            tableData: [],
+            materialsData:[],
         }
     },
     computed:{
@@ -285,18 +289,62 @@ export default {
             return this.tableData;
         },
         materialsFilterData(){
-            return []
+            return this.materialsData
         }
     },
     methods:{
+        getList(){
+            user.getList().then(res=>{
+                this.tableData = res.data.data
+            })
+            materials.getList().then(res=>{
+                this.materialsData = res.data.data
+            })
+        },
         changeTab(index){
             this.tabIndex = index;
         },
+        changeDep(){
+            var dep = this.departmentValue || '未分配'
+            var ps = this.transferValue.map(id=>{
+                return user.changeDep({
+                    id,
+                    department:dep,
+                    poster:this.$store.getters.name
+                })
+            });
+            Promise.all(ps).then(res=>{
+                 this.$message({
+                    message: '部门分派成功',
+                    type: 'success'
+                });
+            })
+        },
         addMaterials(){
             this.addMaForm.status = '空闲';
-            this.$message({
-                message: '恭喜你，这是一条成功消息',
-                type: 'success'
+            var form = this.addMaForm;
+            form.poster = this.$store.getters.name;
+            materials.addMaterials(form).then(res=>{
+                this.$message({
+                    message: '物资添加成功',
+                    type: 'success'
+                });
+                this.addMaFormVisible = false;
+            })
+        },
+        destoryMa(row){
+            materials.destroyMaterial({
+                id:row.id,
+            }).then(res=>{
+                this.$message({
+                    message: res.data.msg,
+                    type: 'success'
+                });
+            },err=>{
+                this.$message({
+                    message: res.data.msg,
+                    type: 'error'
+                })
             });
         },
         modifyPwdClick(row) {
@@ -305,18 +353,53 @@ export default {
         },
         modifyAuthClick(row){
             this.modifyAuthForm.mail = row.mail;
-            this.modifyPwdDialog = true;
+            this.modifyAuthDialog = true;
         },
         modifyPwd(){
+            if(this.modifyForm.freshpwd !== this.modifyForm.checkpwd){
+                this.$message({
+                    message: '您两次输入的密码不一致',
+                    type: 'error'
+                });
+                return 
+            }
             this.modifyPwdDialog = false;
+            user.changePwd(this.modifyForm).then(res=>{
+                this.$message({
+                    message: res.data.msg,
+                    type: 'success'
+                });
+            },err=>{
+                this.$message({
+                    message: res.data.msg,
+                    type: 'error'
+                })
+            })
         },
         modifyAuth(){
             this.modifyPwdDialog = false;
+            user.changeAuth(this.modifyAuthForm).then(res=>{
+                this.$message({
+                    message: res.data.msg,
+                    type: 'success'
+                });
+            },err=>{
+                this.$message({
+                    message: res.data.msg,
+                    type: 'error'
+                })
+            })
+
         },
         filterMethod(query, item) {
-            console.log(item)
+            if(!query){
+                return item.name.includes(query)
+            }
           return true
         }
+    },
+    created(){
+        this.getList()
     }
 }
 </script>

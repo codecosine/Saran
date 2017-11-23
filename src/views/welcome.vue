@@ -10,7 +10,6 @@
                         <a :class="{'active': cuurrentIndex == 1 }" @click="changeTab(1)">登录</a>
                         <a :class="{'active': cuurrentIndex == 2 }" @click="changeTab(2)">注册</a>
                     </h4>
-                    <button @click="test">test</button>
                 </el-col>
                 <el-col :span="6" :offset="14" v-show="cuurrentIndex == 2">
                     <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px">
@@ -127,9 +126,6 @@ export default {
         }
     },
     methods: {
-        test(){
-            this.$router.push({path:'/dashboard'})
-        },
         login(){
             this.$refs['ruleForm1'].validate((valid) => {
                 if (valid) {
