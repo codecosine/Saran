@@ -1,18 +1,26 @@
 <template>
-  <div class="welcome_wrap">
-    
-    <el-container>
-        <el-main>
-            <div class="content">
-            <el-row :gutter="20">
-                <el-col :span="6" :offset="14">
-                    <h4 class="signTab">
-                        <a :class="{'active': cuurrentIndex == 1 }" @click="changeTab(1)">登录</a>
-                        <a :class="{'active': cuurrentIndex == 2 }" @click="changeTab(2)">注册</a>
-                    </h4>
+  <div>
+      <div class="back">
+          <div class="items">
+              <div class="mask img-mask"></div>
+              <div class="back_img img_item"></div>
+               
+          </div>
+          <div class="main-content">
+                <div class="laymid">
+                    <div class="laymid-text"></div>
+                    <p class="laymid-btn">
+                        <el-button type="primary">立即开始</el-button>
+                    </p>
+                </div>
+          </div>
+          <!-- <el-row :gutter="20" class="logInContent">
+                <el-col :span="5" :offset="14" class="tabBox box">
+                    <li :class="{'active': cuurrentIndex == 1 }" @click="changeTab(1)"><a>账号登录</a></li>
+                    <li :class="{'active': cuurrentIndex == 2 }" @click="changeTab(2)"><a>快速注册</a></li>
                 </el-col>
-                <el-col :span="6" :offset="14" v-show="cuurrentIndex == 2">
-                    <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px">
+                <el-col :span="5" :offset="14" v-show="cuurrentIndex == 2" class="inputbox box">
+                    <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="60px">
                         <el-form-item
                             prop="mail"
                             label="邮箱"
@@ -23,13 +31,10 @@
                         >
                             <el-input v-model="ruleForm2.mail"></el-input>
                         </el-form-item>
-                        <el-form-item label="姓名" prop="name">
-                            <el-input v-model="ruleForm2.name"></el-input>
-                        </el-form-item>
                         <el-form-item label="密码" prop="pass">
                             <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
                         </el-form-item>
-                        <el-form-item label="确认密码" prop="checkPass">
+                        <el-form-item label="确认" prop="checkPass">
                             <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
                         </el-form-item>
                     
@@ -38,8 +43,8 @@
                         </el-form-item>
                     </el-form>
                 </el-col>
-                <el-col :span="6" :offset="14" v-show="cuurrentIndex == 1">
-                    <el-form :model="ruleForm1" status-icon :rules="rules1" ref="ruleForm1" label-width="100px">
+                <el-col :span="5" :offset="14" v-show="cuurrentIndex == 1" class="inputbox box">
+                    <el-form :model="ruleForm1" status-icon :rules="rules1" ref="ruleForm1" label-width="60px">
                         <el-form-item
                             prop="mail"
                             label="邮箱"
@@ -58,17 +63,122 @@
                         </el-form-item>
                     </el-form>
                 </el-col>
-            </el-row>
-            </div>
-        </el-main>
-    </el-container>
+          </el-row> -->
+      </div>
   </div>
 </template>
-<script>
-import user from '../api/user'
-export default {
 
-    data(){
+<style lang="less" scoped>
+.back {
+    //bottom: 70px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+    .main-content{
+        width: 1200px;
+        margin: 0 auto;
+        height: 100%;
+    }
+    .items{
+            overflow: visible;
+    }
+    .back_img{
+        background: #fff none no-repeat center center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+    .img_item {
+        background-image: url('../assets/people-coffee-tea-meeting.jpg');
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    .mask{
+        position: absolute;
+        z-index: 9;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        //opacity: 0;
+    }
+    .img-mask {
+        z-index: 99;
+        background: #000;
+        opacity: 0.15;
+        filter: alpha(opacity=40);
+          
+    }
+}
+.laymid {
+    position: absolute;
+    z-index: 100;
+    top: 50%;
+    left: 50%;
+    width: 380px;
+    height: 200px;
+    margin-left: -195px;
+    margin-top: -90px;
+    .laymid-text{
+        margin-bottom: 10px;
+        width: 380px;
+        height: 88px;
+        background-repeat: no-repeat;
+        background-position: -10px 0;
+        background-size: 100% 100%;
+        background-image: url('../assets/bgText.png');
+    }
+    .laymid-btn{
+        text-align: center;
+        // button{
+        //     margin: 5px auto;
+        // }
+    }
+}
+.active{
+    a{
+        color: #3a8ee6 !important;
+    }
+    border-bottom: 2px solid #3a8ee6
+}
+.logInContent{
+    top:20%;
+    .tabBox{
+        a{
+            color: #fff;
+        }
+        margin-bottom: 4px;
+        li{
+            //font-weight: bold;
+            padding: 15px 0;
+            display: inline-block;
+            width: 49%;
+            cursor: pointer;
+            text-align: center;
+        }
+    }
+    .inputbox{
+        padding-top:20px;
+    }
+    .box{
+        border: 1px solid transparent;
+        background: rgba(0,0,0,.3);
+    }
+}
+</style>
+
+<script>
+export default {
+   data(){
         var validateName = (rule, value, callback) => {
             if (value === '') {
             callback(new Error('请输入用户名'));
@@ -107,7 +217,6 @@ export default {
                 mail:'',
                 pass: '',
                 checkPass: '',
-                name: ''
             },
             rules1: {
 
@@ -186,25 +295,4 @@ export default {
     }
 }
 </script>
-<style lang="less" scoped>
-.welcome_wrap{
-    background: url('../assets/campus.jpeg') no-repeat;
-    // background-size:100% 100%;
-    background-origin:border-box;
-    height: 100%;
-}
-.signTab{
-    padding-left: 50px;
-    .active {
-         color: #399faa
-    }
-    a{
-        padding:10px;
-        cursor: pointer;
-        &:hover{
-            color: #399faa
-        }
-    }
-}
 
-</style>

@@ -3,7 +3,7 @@ import * as types from '../mutation-types'
 const state = {
   token: '',
   auth: '',
-  name: '游客',
+  name: 'admin',
   mail: '',
   memberList: [],
 }
