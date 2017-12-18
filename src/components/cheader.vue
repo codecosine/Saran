@@ -13,10 +13,16 @@
             </ul>
         </nav>
       </div>
+      <c-login></c-login>
     </header>
 </template>
 <script>
+
+import cLogin from './cLogin'
 export default {
+    components:{
+      cLogin,
+    },
     data(){
       return {
         isWecome:true,
