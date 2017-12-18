@@ -1,48 +1,39 @@
 <template>
-<div>
+<div v-show="loginModalShow">
   <div class="signInBox">
-      <div class="signIn">
-          <el-input v-model="input" placeholder="请输入内容"></el-input>
-            <el-input v-model="input" placeholder="请输入内容"></el-input>
-
-      </div>
-      <div class="register">
-          <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px">
-                        <el-form-item
-                            prop="mail"
-                            label="邮箱"
-                            :rules="[
-                            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-                            { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
-                            ]"
-                        >
-                            <el-input v-model="ruleForm2.mail"></el-input>
-                        </el-form-item>
-                        <el-form-item label="姓名" prop="name">
-                            <el-input v-model="ruleForm2.name"></el-input>
-                        </el-form-item>
-                        <el-form-item label="密码" prop="pass">
-                            <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="确认密码" prop="checkPass">
-                            <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
-                        </el-form-item>
-                    
-                        <el-form-item>
-                            <el-button type="primary" @click="register">注册</el-button>
-                        </el-form-item>
-                    </el-form>
-      </div>
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="登录" name="first">
+            <div class="formBox">
+                <el-input class="form-item" v-model="ruleForm1.mail" placeholder="请输入登录邮箱/用户名"></el-input>
+                <el-input class="form-item" v-model="ruleForm1.pass" placeholder="6-16位密码,区分大小写,不能用空格"></el-input>
+                <div class="form-item">
+                    <label class="label-forget">忘记密码？</label>
+                </div>
+                <button class="form-item  btn-full btn-red">
+                    登录
+                </button>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane label="注册" name="second">
+            <div class="formBox">
+                <el-input class="form-item" v-model="ruleForm2.mail" placeholder="请输入注册邮箱/用户名"></el-input>
+                <el-input class="form-item" v-model="ruleForm2.pass" placeholder="6-16位密码,区分大小写,不能用空格"></el-input>
+                <el-input class="form-item" v-model="ruleForm2.checkPass" placeholder="确认密码"></el-input>
+                <button class="form-item  btn-full btn-red">
+                    注册
+                </button>
+            </div>
+        </el-tab-pane>
+    </el-tabs>
+    <span class="signInBoxClose" @click="handleClose"><i class="el-icon-close"></i></span>
   </div>
-  <div class="modal-backdrop">
-
-  </div>
+  <div class="modal-backdrop modal-in" @click.stop="handleClose"></div>
 </div>
 
 </template>
 <script>
 export default {
-    props:['isShow'],
+    props:['loginModalShow'],
     data(){
         var validateName = (rule, value, callback) => {
             if (value === '') {
@@ -73,6 +64,7 @@ export default {
             }
         };
         return {
+            activeName: 'second',
             cuurrentIndex: 1,
             ruleForm1: {
                 mail:'',
@@ -83,24 +75,16 @@ export default {
                 pass: '',
                 checkPass: '',
                 name: ''
-            },
-            rules1: {
-
-            },
-            rules2: {
-                pass: [
-                    { validator: validatePass, trigger: 'blur' }
-                ],
-                checkPass: [
-                    { validator: validatePass2, trigger: 'blur' }
-                ],
-                name: [
-                    { validator: validateName, trigger: 'blur' }
-                ]
             }
         }
     },
     methods: {
+        handleClose(){
+            this.$emit('onchange',false)
+        },
+        handleClick(tab, event) {
+            console.log(tab, event);
+        },
         login(){
             this.$refs['ruleForm1'].validate((valid) => {
                 if (valid) {
@@ -164,10 +148,12 @@ export default {
 
 <style lang="less" scoped>
 .signInBox{
+    padding:10px 20px 10px 20px;
     position: fixed;
     background: #fff;
-    z-index: 100000;
-    width: 360px;
+    z-index: 1050;
+    width: 320px;
+    min-height: 300px;
     padding-bottom: 30px;
     left: 50%;
     top: 50%;
@@ -177,7 +163,53 @@ export default {
     -webkit-transition: all 0.2s;
     -moz-transition: all 0.2s;
     -o-transition: all 0.2s;
+    .signInBoxClose{
+        position: absolute;
+        font-size: 1.2em;
+        cursor: pointer;
+        right: 15px;
+        top: 19px;
+        &:hover{
+          color: aquamarine;
+        }
+    }
 
+}
+.btn-red{
+    color: #fff;
+    background-color: #ec1500;
+    border-color: #ec1500;
+    border-style: solid;
+    border-width: 1px;
+    -weibkit-transition: all .3s;
+    -moz-transition: all .3s;
+    transition: all .3s;
+    width: 138px;
+    height: 38px;
+    line-height: 38px;
+    font-size: 14px;
+}
+
+.formBox{
+    padding:5px 8px 0px 8px;
+    .form-item{
+        padding-bottom: 15px;
+        .label-forget{
+            color: #787d82;
+        }
+    }
+    .btn-full{
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        font-size: 16px;
+    }
+    
+    
+}
+.modal-in{
+    opacity: .65;
+    filter: alpha(opacity=65);
 }
 .modal-backdrop {
     position: fixed;

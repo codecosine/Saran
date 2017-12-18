@@ -1,5 +1,5 @@
 <template>
-    <header :class="{ welcomeStyleNav: isWecome }" class="main-header navbar navbar-color-fixed">
+    <header :class="{'navbar-color-welcome': isWecome, 'navbar-color-main': !isWecome}" class="main-header navbar">
       <div class="container">
         <nav>
             <ul class="nav navbar-nav">
@@ -9,11 +9,12 @@
               </li>
             </ul>
             <ul class="nav navbar-nav pull-right">
-              <li><a href="/">{{username}}</a></li>
+              <li v-if="isLogined"><a href="/">{{username}}</a></li>
+              <li v-if="!isLogined"><a href="javascript:void(0)" @click="isloginModalShow=true">登录</a></li>
             </ul>
         </nav>
       </div>
-      <c-login></c-login>
+      <c-login :loginModalShow="isloginModalShow" @onchange="modalChange"></c-login>
     </header>
 </template>
 <script>
@@ -25,7 +26,8 @@ export default {
     },
     data(){
       return {
-        isWecome:true,
+        isLogined:false,
+        isloginModalShow:false,
         username:'登录',
         routesList:[{
           path:'/welcome',
@@ -42,9 +44,17 @@ export default {
         ]
       }
     },
+    methods:{
+      modalChange(res){
+        this.isloginModalShow = res;
+      }
+    },
     computed:{
       routePath(){
-        return this.$router.path
+        return this.$route.path
+      },
+      isWecome(){
+        return this.$route.path == '/welcome' || this.$route.path == '/'
       }
     }
 }
@@ -65,10 +75,19 @@ export default {
     margin-bottom: 20px;
     border: 1px solid transparent;
 }
-.navbar-color-fixed {
+.navbar-color-welcome{
     top: 0;
-    z-index: 999;
+    z-index: 900;
     background: rgba(0,0,0,.4);
+    a {
+      color: #bfbfbf;
+    }
+}
+.navbar-color-main{
+    top: 0;
+    z-index: 900;
+    background:  #fff !important;
+    box-shadow: 0 4px 8px 0 rgba(7,17,27,.1);
 }
 .pull-right {
    float: right;
@@ -83,11 +102,7 @@ export default {
     }
 }
 
-.welcomeStyleNav{
-  a {
-    color: #bfbfbf;
-  }
-}
+
 .navbar-nav li{
     a:focus,a:hover {
       color: #399faa;
