@@ -20,7 +20,7 @@
 }
 .main-footer{
     //bottom: 0;
-    background-color: #f1f1f1;
+    background-color: #fff;
     padding: 15px 0px;
     width: 100%;
     text-align: center;

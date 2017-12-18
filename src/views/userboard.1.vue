@@ -1,82 +1,143 @@
 <template>
-  <div class="container">
-            <div class="memberBox">
-                <h2>社团成员管理</h2>
-                <div class="searchBox">
-                    <div class="filterBox">
-                        <el-checkbox-group v-model="departmentFilter" size="mini">
-                            <el-checkbox-button v-for="(item,index) in departmentList" 
-                                :label="item.label" 
-                                :key="index">
-                            </el-checkbox-button>
-                        </el-checkbox-group>
-                    </div>
-                    <div class="filterBox">
-                        <el-input
-                            size="mini"
-                            placeholder="查询.."
-                            suffix-icon="el-icon-search"
-                            v-model="searchValue">
-                        </el-input>
-                        <i class="el-icon-refresh" @click="getList"></i>
-                    </div>
+  <div>
+        <el-row type="flex" justify="center" style="padding-top:30px">
+            <el-col :span="3">
+                <div class="side-nav">
+                    <ul>
+                        <li class="nav-item" v-for="(item,index) in groupList" :key="index">
+                            <a :class="{ active: tabIndex == index }"@click="changeTab(index)">{{item.label}}</a>
+                        </li>
+                    </ul>
                 </div>
-                    <el-table
-                    :data="tableFilterData"
-                    style="margin-top:20px;width: 100%">
-                    <el-table-column
-                        prop="mail"
-                        label="邮箱">
-                    </el-table-column>
-                    <el-table-column
-                        prop="department"
-                        label="部门">
-                    </el-table-column>
+            </el-col>
+            <el-col :span="12">
+                <div class="memberBox" v-show="tabIndex == 0">
+                    <h2>社团成员管理</h2>
+                    <div class="searchBox">
+                        <div class="filterBox">
+                            <el-checkbox-group v-model="departmentFilter" size="mini">
+                                <el-checkbox-button v-for="(item,index) in departmentList" 
+                                    :label="item.label" 
+                                    :key="index">
+                                </el-checkbox-button>
+                            </el-checkbox-group>
+                        </div>
+                        <div class="filterBox">
+                            <el-input
+                                size="mini"
+                                placeholder="查询.."
+                                suffix-icon="el-icon-search"
+                                v-model="searchValue">
+                            </el-input>
+                            <i class="el-icon-refresh" @click="getList"></i>
+                        </div>
+                    </div>
+                     <el-table
+                        :data="tableFilterData"
+                        style="margin-top:20px;width: 100%">
                         <el-table-column
-                        prop="name"
-                        label="姓名">
-                    </el-table-column>
+                            prop="mail"
+                            label="邮箱">
+                        </el-table-column>
                         <el-table-column
-                        prop="auth"
-                        label="权限">
-                    </el-table-column>
-                    <el-table-column
-                        prop="createdAt"
-                        label="注册时间">
-                    </el-table-column>
-                    <el-table-column
-                        v-if="adminAuth"
-                        fixed="right"
-                        label="操作">
-                        <template slot-scope="scope">
-                            <el-button @click="modifyPwdClick(scope.row)" type="text" size="small">修改密码</el-button>
-                            <el-button @click="modifyAuthClick(scope.row)" type="text" size="small">权限修改</el-button>
-                        </template>
-                    </el-table-column>
-                    
-                </el-table>
-            </div>
-            <div v-show="asd">
-                <h2>部门管理</h2>
-                <h4>请选择需要管理的部门</h4>
-                <el-radio-group v-model="departmentValue" size="small">
-                    <el-radio-button v-for="item in departmentList" :key="item.label" :label="item.label" ></el-radio-button>
-                </el-radio-group>
-                <h4>成员操作</h4>
-                <el-transfer  filterable
-                    :filter-method="filterMethod"
-                    :props="{
-                        key: 'id',
-                        label: 'name'
-                    }"
-                    filter-placeholder="请输入姓名或邮箱"
-                    :titles="['成员列表','转移的部门']"
-                    v-model="transferValue" :data="tableData">
-                </el-transfer>
-                <el-button type="primary" @click="changeDep">确定</el-button>
-            </div>
-       
-             <el-dialog
+                            prop="department"
+                            label="部门">
+                        </el-table-column>
+                         <el-table-column
+                            prop="name"
+                            label="姓名">
+                        </el-table-column>
+                          <el-table-column
+                            prop="auth"
+                            label="权限">
+                        </el-table-column>
+                        <el-table-column
+                            prop="createdAt"
+                            label="注册时间">
+                        </el-table-column>
+                        <el-table-column
+                            v-if="adminAuth"
+                            fixed="right"
+                            label="操作">
+                            <template slot-scope="scope">
+                                <el-button @click="modifyPwdClick(scope.row)" type="text" size="small">修改密码</el-button>
+                                <el-button @click="modifyAuthClick(scope.row)" type="text" size="small">权限修改</el-button>
+                            </template>
+                        </el-table-column>
+                        
+                    </el-table>
+                </div>
+                <div v-show="tabIndex == 1">
+                    <h2>部门管理</h2>
+                    <h4>请选择需要管理的部门</h4>
+                    <el-radio-group v-model="departmentValue" size="small">
+                        <el-radio-button v-for="item in departmentList" :key="item.label" :label="item.label" ></el-radio-button>
+                    </el-radio-group>
+                    <h4>成员操作</h4>
+                    <el-transfer  filterable
+                        :filter-method="filterMethod"
+                        :props="{
+                            key: 'id',
+                            label: 'name'
+                        }"
+                        filter-placeholder="请输入姓名或邮箱"
+                        :titles="['成员列表','转移的部门']"
+                        v-model="transferValue" :data="tableData">
+                    </el-transfer>
+                    <el-button type="primary" @click="changeDep">确定</el-button>
+                </div>
+                <div class="memberBox" v-show="tabIndex == 2">
+                    <h2>物资管理</h2>
+                    <div class="searchBox">
+                        <div class="filterBox">
+                            <el-button size="small" type="primary" round  @click="addMaFormVisible = true">+新增物资</el-button>
+                        </div>
+                        <div class="filterBox">
+                            <el-input
+                                size="mini"
+                                placeholder="查询.."
+                                suffix-icon="el-icon-search"
+                                v-model="searchValue">
+                            </el-input>
+                        </div>
+                    </div>
+                     <el-table
+                        :data="materialsFilterData"
+                        style="margin-top:20px;width: 100%">
+                        <el-table-column
+                            prop="id"
+                            label="Id">
+                        </el-table-column>
+                         <el-table-column
+                            prop="name"
+                            label="物资名称">
+                        </el-table-column>
+                        <el-table-column
+                            prop="status"
+                            label="状态">
+                        </el-table-column>
+                        <el-table-column
+                            prop="remark"
+                            label="备注信息">
+                        </el-table-column>
+                        <el-table-column
+                            prop="updatedAt"
+                            label="更新时间">
+                        </el-table-column>
+                        <el-table-column
+                            v-if="adminAuth"
+                            fixed="right"
+                            label="操作"
+                            >
+                            <template slot-scope="scope">
+                                <el-button type="text" size="small">修改</el-button>
+                                <el-button type="text" size="small" @click="destoryMa">删除</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </el-col>
+            <el-dialog
                 title="修改密码"
                 :visible.sync="modifyPwdDialog"
                 width="30%"
@@ -141,6 +202,8 @@
                     <el-button type="primary" @click="addMaterials">确定添加</el-button>
                 </div>
             </el-dialog>
+        </el-row>
+        
   </div>
 </template>
 <script>
@@ -149,7 +212,6 @@ import materials from '../api/materials'
 export default {
    data() {
         return {
-            asd:false,
             modifyPwdDialog: false,
             modifyAuthDialog: false,
             addMaFormVisible: false,
@@ -342,11 +404,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.container{
-    width: 1140px;
-    padding: 0;
-    margin: 0 auto;
-}
 .memberBox{
     position: relative;
     .searchBox{

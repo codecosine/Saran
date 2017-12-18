@@ -35,11 +35,15 @@ export default {
         },
         {
           path:'/dashboard',
-          name:'活动信息'
+          name:'活动工作台'
         },
         {
           path:'/userBoard',
-          name:'社团管理'
+          name:'成员信息'
+        },
+        {
+          path:'/userBoard',
+          name:'物资信息'
         }
         ]
       }
