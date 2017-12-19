@@ -124,20 +124,21 @@
     z-index: 100;
     top: 50%;
     left: 50%;
-    width: 380px;
-    height: 200px;
-    margin-left: -195px;
-    margin-top: -90px;
+    width: 450px;
+    height: 220px;
+    margin-left: -225px;
+    margin-top: -110px;
     .laymid-text{
         margin-bottom: 10px;
-        width: 380px;
-        height: 88px;
+        width: 450px;
+        height: 100px;
         background-repeat: no-repeat;
         background-position: -10px 0;
         background-size: 100% 100%;
         background-image: url('../assets/bgText.png');
     }
     .laymid-btn{
+        margin-left: -10px;
         text-align: center;
         // button{
         //     margin: 5px auto;
