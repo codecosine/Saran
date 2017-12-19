@@ -6,7 +6,7 @@ import userBoard from '@/views/userboard'
 Vue.use(Router)
 
 let option = {
-  mode: 'history',
+  //mode: 'history',
   routes: [
     {
       path: '/',

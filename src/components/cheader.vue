@@ -30,19 +30,19 @@ export default {
         isloginModalShow:false,
         username:'登录',
         routesList:[{
-          path:'/welcome',
+          path:'/#/welcome',
           name:'Saran社团管理系统'
         },
         {
-          path:'/dashboard',
+          path:'/#/dashboard',
           name:'活动工作台'
         },
         {
-          path:'/userBoard',
+          path:'/#/userBoard',
           name:'成员信息'
         },
         {
-          path:'/userBoard',
+          path:'/#/userBoard',
           name:'物资信息'
         }
         ]

@@ -17,6 +17,7 @@
         <el-tab-pane label="注册" name="second">
             <div class="formBox">
                 <el-input class="form-item" v-model="ruleForm2.mail" placeholder="请输入注册邮箱/用户名"></el-input>
+                <el-input class="form-item" v-model="ruleForm2.name" placeholder="请输入您的姓名"></el-input>
                 <el-input class="form-item" v-model="ruleForm2.pass" placeholder="6-16位密码,区分大小写,不能用空格"></el-input>
                 <el-input class="form-item" v-model="ruleForm2.checkPass" placeholder="确认密码"></el-input>
                 <button class="form-item  btn-full btn-red">
@@ -195,7 +196,11 @@ export default {
     .form-item{
         padding-bottom: 15px;
         .label-forget{
+            cursor: pointer;
             color: #787d82;
+            &:hover{
+            color: aquamarine;
+            }
         }
     }
     .btn-full{
@@ -203,6 +208,7 @@ export default {
         height: 50px;
         line-height: 50px;
         font-size: 16px;
+        cursor: pointer;
     }
     
     
