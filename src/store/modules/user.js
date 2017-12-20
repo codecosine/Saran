@@ -2,16 +2,13 @@ import * as types from '../mutation-types'
 
 const state = {
   token: '',
-  auth: '',
-  name: 'admin',
-  mail: '',
+  name: '',
   memberList: [],
 }
 
 // getters
 const getters = {
   name: state => state.name,
-  auth: state => state.auth,
   token: state => state.token,
   memberList: state => state.memberList,
 }
@@ -28,6 +25,9 @@ const actions = {
       }
     })
   },
+  logout({ commit,state}){
+    commit(types.LOGOUT)
+  }
 }
 
 // mutations
@@ -39,6 +39,11 @@ const mutations = {
   [types.ADD_TO_MEMBER_LIST] (state, items) {
     state.memberList = items
   },
+  [types.LOGOUT] (state){
+    state.token = ''
+    state.name = ''
+    state.memberList = []
+  }
 
 }
 

@@ -1,10 +1,5 @@
 import axios from 'axios'
-function login(options){
-  return axios.post('/sign/signin', options)
-}
-function register(options){
-  return axios.post('/sign/signup', options)
-}
+
 function getList(){
   return axios.post('/api/getMemberList')
 }
@@ -25,8 +20,6 @@ function changeDep(options){
 }
 export default {
     getList,
-    login,
-    register,
     changePwd,
     changeAuth,
     changeDep,

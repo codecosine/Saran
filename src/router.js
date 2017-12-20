@@ -1,4 +1,6 @@
 import Vue from 'vue'
+import store from './store'
+
 import Router from 'vue-router'
 import DashBoard from '@/views/dashboard'
 import welcome from '@/views/welcome'
@@ -44,18 +46,14 @@ let option = {
 let router = new Router(option)
 
 router.beforeEach((to, from, next) => {
+  console.log(from)
   if(to.meta.auth == 'member'){
-    //vm = to.router.app.$root
-    console.log(router.app.$root.test)
-    next()
-    // console.log(router.app)
-    // var token = router.app.$store.getters.token
-    // console.log(token)
-    // if(token){
-    //   next()
-    // } else {
-    //   next(new Error('你没有权限进入此页面'))        
-    // }
+    var token = store.getters.token 
+    if(token){
+      next()
+    } else {
+      next(false)
+    }
   } else {
     next()
   }

@@ -10,63 +10,22 @@
                 <div class="laymid">
                     <div class="laymid-text"></div>
                     <p class="laymid-btn">
-                        <el-button type="primary">立即开始</el-button>
+                        <el-button type="primary" @click="quickStart">立即开始</el-button>
                     </p>
                 </div>
           </div>
-          <!-- <el-row :gutter="20" class="logInContent">
-                <el-col :span="5" :offset="14" class="tabBox box">
-                    <li :class="{'active': cuurrentIndex == 1 }" @click="changeTab(1)"><a>账号登录</a></li>
-                    <li :class="{'active': cuurrentIndex == 2 }" @click="changeTab(2)"><a>快速注册</a></li>
-                </el-col>
-                <el-col :span="5" :offset="14" v-show="cuurrentIndex == 2" class="inputbox box">
-                    <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="60px">
-                        <el-form-item
-                            prop="mail"
-                            label="邮箱"
-                            :rules="[
-                            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-                            { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
-                            ]"
-                        >
-                            <el-input v-model="ruleForm2.mail"></el-input>
-                        </el-form-item>
-                        <el-form-item label="密码" prop="pass">
-                            <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="确认" prop="checkPass">
-                            <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
-                        </el-form-item>
-                    
-                        <el-form-item>
-                            <el-button type="primary" @click="register">注册</el-button>
-                        </el-form-item>
-                    </el-form>
-                </el-col>
-                <el-col :span="5" :offset="14" v-show="cuurrentIndex == 1" class="inputbox box">
-                    <el-form :model="ruleForm1" status-icon :rules="rules1" ref="ruleForm1" label-width="60px">
-                        <el-form-item
-                            prop="mail"
-                            label="邮箱"
-                            :rules="[
-                            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-                            { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
-                            ]"
-                        >
-                            <el-input v-model="ruleForm1.mail"></el-input>
-                        </el-form-item>
-                        <el-form-item label="密码" prop="pass">
-                            <el-input type="password" v-model="ruleForm1.pass" auto-complete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="login">登录</el-button>
-                        </el-form-item>
-                    </el-form>
-                </el-col>
-          </el-row> -->
       </div>
   </div>
 </template>
+<script>
+export default {
+  methods:{
+      quickStart(){
+
+      }
+  }
+}
+</script>
 
 <style lang="less" scoped>
 .back {

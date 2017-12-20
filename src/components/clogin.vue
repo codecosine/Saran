@@ -1,29 +1,29 @@
 <template>
 <div v-show="loginModalShow">
   <div class="signInBox">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName">
         <el-tab-pane label="登录" name="first">
-            <div class="formBox">
+            <el-form class="formBox" ref="ruleForm1" :model="ruleForm1">
                 <el-input class="form-item" v-model="ruleForm1.mail" placeholder="请输入登录邮箱/用户名"></el-input>
-                <el-input class="form-item" v-model="ruleForm1.pass" placeholder="6-16位密码,区分大小写,不能用空格"></el-input>
+                <el-input class="form-item" type="password" v-model="ruleForm1.pass" placeholder="6-16位密码,区分大小写,不能用空格"></el-input>
                 <div class="form-item">
                     <label class="label-forget">忘记密码？</label>
                 </div>
-                <button class="form-item  btn-full btn-red">
+                <button type="button" class="form-item btn-full btn-red" @click="login"> 
                     登录
                 </button>
-            </div>
+            </el-form>
         </el-tab-pane>
         <el-tab-pane label="注册" name="second">
-            <div class="formBox">
+            <el-form class="formBox" ref="ruleForm2" :model="ruleForm2">
                 <el-input class="form-item" v-model="ruleForm2.mail" placeholder="请输入注册邮箱/用户名"></el-input>
                 <el-input class="form-item" v-model="ruleForm2.name" placeholder="请输入您的姓名"></el-input>
-                <el-input class="form-item" v-model="ruleForm2.pass" placeholder="6-16位密码,区分大小写,不能用空格"></el-input>
-                <el-input class="form-item" v-model="ruleForm2.checkPass" placeholder="确认密码"></el-input>
-                <button class="form-item  btn-full btn-red">
+                <el-input class="form-item" type="password" v-model="ruleForm2.pass" placeholder="6-16位密码,区分大小写,不能用空格"></el-input>
+                <el-input class="form-item" type="password" v-model="ruleForm2.checkPass" placeholder="确认密码"></el-input>
+                <button  type="button" class="form-item btn-full btn-red"  @click="register">
                     注册
                 </button>
-            </div>
+            </el-form>
         </el-tab-pane>
     </el-tabs>
     <span class="signInBoxClose" @click="handleClose"><i class="el-icon-close"></i></span>
@@ -33,6 +33,7 @@
 
 </template>
 <script>
+import Login from '../api/login'
 export default {
     props:['loginModalShow'],
     data(){
@@ -65,7 +66,7 @@ export default {
             }
         };
         return {
-            activeName: 'second',
+            activeName: 'first',
             cuurrentIndex: 1,
             ruleForm1: {
                 mail:'',
@@ -83,61 +84,71 @@ export default {
         handleClose(){
             this.$emit('onchange',false)
         },
-        handleClick(tab, event) {
-            console.log(tab, event);
-        },
         login(){
-            this.$refs['ruleForm1'].validate((valid) => {
-                if (valid) {
-                    user.login(this.ruleForm1).then(res=>{
-                        if(res.data.code == 0){
-                            this.$store.dispatch('updateUser',res.data.data)
-                            this.$message({
-                                message: '恭喜你,登录成功',
-                                type: 'success'
-                            });
-                            this.$router.push({path:'/dashboard'})
-                        } else {
-                            this.$message({
-                                message: '登录失败',
-                                type: 'error'
-                            });
-                        }
-                    })
+            Login.signin(this.ruleForm1).then(res=>{
+                console.log(res)
+                if(res.data.code == 0){
+                    this.$store.dispatch('updateUser',res.data.data)
+                    this.$message({
+                        message: '恭喜你,登录成功，现在转入工作台',
+                        type: 'success'
+                    });
+                    this.$router.push({ path:'/dashboard'} )
+                    this.handleClose();
                 } else {
                     this.$message({
-                        message: '未正确填入表单',
+                        message: '登录失败',
                         type: 'error'
                     });
                 }
-            });
+            }).catch(err=>{
+                console.error(err)
+            })
+            // this.$refs['ruleForm1'].validate((valid) => {
+            //     if (valid) {
+                    
+            //     } else {
+            //         this.$message({
+            //             message: '未正确填入表单',
+            //             type: 'error'
+            //         });
+            //     }
+            // });
         },
         register(){
-            this.$refs['ruleForm2'].validate((valid) => {
-                if (valid) {
-                    user.register(this.ruleForm2).then(res=>{
-                        // 储存权限信息
-                        if(res.data.code == 0){
-                            this.$store.dispatch('updateUser',res.data.data)
-                            this.$message({
-                                message: '恭喜你,注册成功,即将转入登录后主页',
-                                type: 'success'
-                            });
-                            this.$router.push({path:'/dashboard'})
-                        } else {
-                            this.$message({
-                                message: '注册失败',
-                                type: 'error'
-                            });
-                        }
-                    })
+            Login.signup(this.ruleForm2).then(res=>{
+                // 储存权限信息
+                if(res.data.code == 0){
+                    this.$store.dispatch('updateUser',res.data.data)
+                    this.$message({
+                        message: '恭喜你,注册成功,即将转入工作台',
+                        type: 'success'
+                    });
+                    this.$router.push({path:'/dashboard'})
+                    this.handleClose();
                 } else {
                     this.$message({
-                        message: '未正确填入表单',
+                        message: '注册失败',
                         type: 'error'
                     });
                 }
-            });
+            }).catch(err=>{
+                console.error(err)
+                this.$message({
+                    message: '注册失败：'+err,
+                    type: 'error'
+                });
+            })
+            // this.$refs['ruleForm2'].validate((valid) => {
+            //     if (valid) {
+                    
+            //     } else {
+            //         this.$message({
+            //             message: '未正确填入表单',
+            //             type: 'error'
+            //         });
+            //     }
+            // });
         },
         changeTab(index){
             this.cuurrentIndex = index;
