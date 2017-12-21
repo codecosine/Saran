@@ -4,7 +4,6 @@
           <div class="items">
               <div class="mask img-mask"></div>
               <div class="back_img img_item"></div>
-               
           </div>
           <div class="main-content">
                 <div class="laymid">
@@ -19,9 +18,9 @@
 </template>
 <script>
 export default {
-  methods:{
+    methods:{
       quickStart(){
-
+        this.$router.push({ path:'/dashboard'})
       }
   }
 }

@@ -47,6 +47,10 @@ let router = new Router(option)
 
 router.beforeEach((to, from, next) => {
   console.log(from)
+  // 第一次登录时，向服务器确认token
+  if(from.name == null){
+    console.log('第一次登录')
+  }
   if(to.meta.auth == 'member'){
     var token = store.getters.token 
     if(token){
